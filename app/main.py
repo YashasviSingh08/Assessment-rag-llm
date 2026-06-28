@@ -1,5 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 from app.rag import ask
 from app.embeddings import build_vector_store
@@ -12,7 +14,7 @@ app = FastAPI(
 )
 
 
-
+app.mount("/static", StaticFiles(directory="frontend"), name="static")
 # Request Model
 
 class QuestionRequest(BaseModel):
@@ -22,13 +24,10 @@ class QuestionRequest(BaseModel):
 
 
 @app.get("/")
-def home():
 
-    return {
-        "message": "Healthcare AI Assistant API is running.",
-        "docs": "/docs",
-        "health": "/health"
-    }
+
+def home():
+    return FileResponse("frontend/index.html")
 
 
 # Health Check

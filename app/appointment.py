@@ -2,10 +2,11 @@ def book_appointment(query):
 
     return {
 
-        "status": "success",
+        "type": "appointment",
 
-        "message": "Appointment booking request received.",
+        "answer": "Appointment booking request received.",
+
+        "confidence": "N/A",
 
         "details": query
-
-    }
+}

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Healthcare AI Assistant</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+
+background:#0f172a;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+
+}
+
+.container{
+
+width:900px;
+height:700px;
+
+background:#111827;
+
+border-radius:20px;
+
+display:flex;
+
+overflow:hidden;
+
+box-shadow:0 20px 60px rgba(0,0,0,.45);
+
+}
+
+.sidebar{
+
+width:250px;
+
+background:#1e293b;
+
+padding:30px;
+
+color:white;
+
+}
+
+.sidebar h2{
+
+margin-bottom:20px;
+
+}
+
+.sidebar p{
+
+font-size:14px;
+
+line-height:1.8;
+
+color:#cbd5e1;
+
+}
+
+.chat{
+
+flex:1;
+
+display:flex;
+
+flex-direction:column;
+
+}
+
+.header{
+
+padding:20px;
+
+background:#1e293b;
+
+color:white;
+
+font-size:22px;
+
+font-weight:600;
+
+}
+
+.messages{
+
+flex:1;
+
+padding:25px;
+
+overflow:auto;
+
+background:#111827;
+
+}
+
+.message{
+
+margin-bottom:20px;
+
+max-width:80%;
+
+padding:15px;
+
+border-radius:15px;
+
+line-height:1.7;
+
+}
+
+.user{
+
+margin-left:auto;
+
+background:#2563eb;
+
+color:white;
+
+}
+
+.bot{
+
+background:#374151;
+
+color:white;
+
+}
+
+.input-area{
+
+padding:20px;
+
+background:#1e293b;
+
+display:flex;
+
+gap:15px;
+
+}
+
+input{
+
+flex:1;
+
+padding:15px;
+
+font-size:16px;
+
+border:none;
+
+border-radius:10px;
+
+outline:none;
+
+}
+
+button{
+
+width:130px;
+
+border:none;
+
+background:#2563eb;
+
+color:white;
+
+font-size:16px;
+
+border-radius:10px;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+button:hover{
+
+background:#1d4ed8;
+
+}
+
+.typing{
+
+display:none;
+
+color:#94a3b8;
+
+padding:10px;
+
+font-style:italic;
+
+}
+
+.footer{
+
+padding:10px;
+
+text-align:center;
+
+font-size:12px;
+
+color:#94a3b8;
+
+background:#0f172a;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="sidebar">
+
+<h2>🏥 Healthcare AI</h2>
+
+<p>
+
+Medical Question Answering
+
+<br><br>
+
+• RAG Pipeline
+
+<br>
+
+• FAISS Search
+
+<br>
+
+• CrossEncoder
+
+<br>
+
+• Ollama Llama3.2
+
+<br>
+
+• FastAPI
+
+</p>
+
+</div>
+
+<div class="chat">
+
+<div class="header">
+
+Healthcare AI Assistant
+
+</div>
+
+<div class="messages" id="messages">
+
+<div class="message bot">
+
+Hello 👋
+
+<br><br>
+
+Ask me any healthcare-related question.
+
+</div>
+
+</div>
+
+<div class="typing" id="typing">
+
+AI is thinking...
+
+</div>
+
+<div class="input-area">
+
+<input
+id="question"
+placeholder="Ask a medical question..."
+>
+
+<button onclick="askAI()">
+
+Send
+
+</button>
+
+</div>
+
+<div class="footer">
+
+Powered by RAG • FAISS • Ollama • FastAPI
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+async function askAI(){
+
+const input=document.getElementById("question");
+
+const question=input.value.trim();
+
+if(question==="") return;
+
+const messages=document.getElementById("messages");
+
+messages.innerHTML+=`
+
+<div class="message user">
+
+${question}
+
+</div>
+
+`;
+
+input.value="";
+
+document.getElementById("typing").style.display="block";
+
+messages.scrollTop=messages.scrollHeight;
+
+try{
+
+const response=await fetch("http://127.0.0.1:8000/ask",{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify({
+
+question:question
+
+})
+
+});
+
+const data=await response.json();
+
+document.getElementById("typing").style.display="none";
+
+messages.innerHTML+=`
+
+<div class="message bot">
+
+<b>Answer</b>
+
+<br><br>
+
+${data.answer}
+
+<br><br>
+
+<hr>
+
+<b>Confidence:</b> ${data.confidence}
+
+</div>
+
+`;
+
+messages.scrollTop=messages.scrollHeight;
+
+}
+
+catch(error){
+
+document.getElementById("typing").style.display="none";
+
+messages.innerHTML+=`
+
+<div class="message bot">
+
+Unable to connect to FastAPI.
+
+</div>
+
+`;
+
+}
+
+}
+
+</script>
+
+</body>
+
+</html>
