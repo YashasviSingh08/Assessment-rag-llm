@@ -9,9 +9,8 @@ from app.logger import logger
 from app.agent import detect_intent
 from app.appointment import book_appointment
 
-# =====================================================
 # Logging
-# =====================================================
+
 
 logging.basicConfig(
     level=logging.INFO,
@@ -21,9 +20,8 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-# =====================================================
 # Confidence
-# =====================================================
+
 
 def calculate_confidence(similarity, rerank_score):
 
@@ -36,33 +34,29 @@ def calculate_confidence(similarity, rerank_score):
     return "Low"
 
 
-# =====================================================
 # RAG Pipeline
-# =====================================================
+
 
 def ask(question):
 
     logger.info(f"Question: {question}")
 
-    # -------------------------------------------------
     # Step 1 : Detect Intent
-    # -------------------------------------------------
+
 
     intent = detect_intent(question)
 
     logger.info(f"Detected Intent : {intent}")
 
-    # -------------------------------------------------
     # Appointment Tool
-    # -------------------------------------------------
+
 
     if intent == "appointment":
 
         return book_appointment(question)
 
-    # -------------------------------------------------
     # Medical RAG
-    # -------------------------------------------------
+
 
     retrieved_docs = search(question)
 
@@ -80,27 +74,25 @@ def ask(question):
 
         }
 
-    # -------------------------------------------------
     # Rerank
-    # -------------------------------------------------
 
     best_docs = rerank(question, retrieved_docs)
 
-    # -------------------------------------------------
+
     # Prompt
-    # -------------------------------------------------
+
 
     prompt = build_prompt(question, best_docs)
 
-    # -------------------------------------------------
+
     # LLM
-    # -------------------------------------------------
+
 
     llm_response = generate(prompt)
 
-    # -------------------------------------------------
+
     # Sources
-    # -------------------------------------------------
+
 
     sources = []
 
@@ -145,9 +137,7 @@ def ask(question):
     }
 
 
-# =====================================================
 # Testing
-# =====================================================
 
 if __name__ == "__main__":
 

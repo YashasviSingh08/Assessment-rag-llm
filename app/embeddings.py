@@ -9,9 +9,8 @@ from tqdm import tqdm
 from sentence_transformers import SentenceTransformer
 from app.logger import logger
 
-# =====================================================
+
 # Configuration
-# =====================================================
 
 DATA_PATH = "scripts/processed/processed_medquad.csv"
 

@@ -3,9 +3,9 @@ import logging
 import faiss
 from sentence_transformers import SentenceTransformer
 
-# =====================================================
+
 # Configuration
-# =====================================================
+
 
 MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 
@@ -15,9 +15,9 @@ METADATA_PATH = "vector_store/medical_metadata.json"
 
 TOP_K = 20
 
-# =====================================================
+
 # Logging
-# =====================================================
+
 
 logging.basicConfig(
     level=logging.INFO,
@@ -26,9 +26,9 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-# =====================================================
+
 # Load Embedding Model
-# =====================================================
+
 
 logger.info("Loading embedding model...")
 
@@ -36,9 +36,9 @@ embedding_model = SentenceTransformer(MODEL_NAME)
 
 logger.info("Embedding model loaded.")
 
-# =====================================================
+
 # Load FAISS Index
-# =====================================================
+
 
 logger.info("Loading FAISS index...")
 
@@ -46,9 +46,8 @@ index = faiss.read_index(INDEX_PATH)
 
 logger.info(f"Total vectors loaded : {index.ntotal}")
 
-# =====================================================
 # Load Metadata
-# =====================================================
+
 
 logger.info("Loading metadata...")
 
@@ -58,9 +57,9 @@ with open(METADATA_PATH, "r", encoding="utf-8") as f:
 logger.info(f"Metadata records : {len(metadata)}")
 
 
-# =====================================================
+
 # Search Function
-# =====================================================
+
 
 def search(query: str, top_k: int = TOP_K):
 
@@ -88,9 +87,8 @@ def search(query: str, top_k: int = TOP_K):
     return results
 
 
-# =====================================================
 # Testing
-# =====================================================
+
 
 if __name__ == "__main__":
 

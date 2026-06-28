@@ -1,17 +1,17 @@
 import logging
 from sentence_transformers import CrossEncoder
 
-# =====================================================
+
 # Configuration
-# =====================================================
+
 
 MODEL_NAME = "cross-encoder/ms-marco-MiniLM-L-6-v2"
 
 TOP_K = 5
 
-# =====================================================
+
 # Logging
-# =====================================================
+
 
 logging.basicConfig(
     level=logging.INFO,
@@ -20,9 +20,9 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-# =====================================================
+
 # Load CrossEncoder
-# =====================================================
+
 
 logger.info("Loading CrossEncoder...")
 
@@ -31,9 +31,9 @@ cross_encoder = CrossEncoder(MODEL_NAME)
 logger.info("CrossEncoder loaded successfully.")
 
 
-# =====================================================
+
 # Rerank Function
-# =====================================================
+
 
 def rerank(query: str, retrieved_docs: list, top_k: int = TOP_K):
 
@@ -65,9 +65,8 @@ def rerank(query: str, retrieved_docs: list, top_k: int = TOP_K):
     return retrieved_docs[:top_k]
 
 
-# =====================================================
 # Testing
-# =====================================================
+
 
 if __name__ == "__main__":
 

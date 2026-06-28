@@ -1,6 +1,6 @@
-# =====================================================
+
 # SYSTEM PROMPT
-# =====================================================
+
 
 SYSTEM_PROMPT = """
 You are an expert Healthcare AI Assistant.
@@ -36,9 +36,9 @@ The application will provide citations separately.
 """
 
 
-# =====================================================
+
 # Build Prompt
-# =====================================================
+
 
 def build_prompt(question: str, documents: list):
 
@@ -82,9 +82,9 @@ Answer:
     return prompt
 
 
-# =====================================================
+
 # Debug
-# =====================================================
+
 
 if __name__ == "__main__":
 
